@@ -1,9 +1,9 @@
 # Self-Driving Car Steering Angle Prediction
 
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue?style=flat-square)](https://www.python.org/downloads/)
-[![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![TensorFlow](https://img.shields.io/badge/tensorflow-2.15%2B-orange?style=flat-square)](https://www.tensorflow.org/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
 
 End-to-end steering-angle prediction for the Udacity self-driving car simulator using a CNN inspired by NVIDIA's DAVE-2 architecture. The repository includes data preprocessing, model training, realtime inference, automated tests, and GitHub collaboration templates.
 
@@ -22,10 +22,10 @@ End-to-end steering-angle prediction for the Udacity self-driving car simulator 
 
 This project trains a convolutional neural network to predict steering commands directly from front-facing camera frames. It is designed around the Udacity simulator workflow:
 
-- preprocess and augment simulator images
-- train a regression model on `driving_log.csv`
-- load the trained model for realtime steering inference
-- validate repository health through automated checks
+- Preprocess and augment simulator images
+- Train a regression model on `driving_log.csv`
+- Load the trained model for realtime steering inference
+- Validate repository health through automated checks
 
 ### Project Type
 
@@ -116,7 +116,7 @@ jupyter notebook data_visualization.ipynb
 ## Project Structure
 
 ```text
-self-driving_car/
+self-driving-car/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   ├── workflows/tests.yml
@@ -139,9 +139,9 @@ self-driving_car/
 
 The repository includes the full training and inference workflow, but model quality depends on the dataset you collect. Because steering-angle prediction is a regression task, meaningful evaluation should focus on:
 
-- validation loss and MAE during training
-- qualitative behavior in the simulator
-- robustness on unseen tracks and lighting conditions
+- Validation loss and MAE during training
+- Qualitative behavior in the simulator
+- Robustness on unseen tracks and lighting conditions
 
 A reference demo asset is included in the repository:
 
@@ -151,8 +151,8 @@ A reference demo asset is included in the repository:
 ## Documentation
 
 - [Architecture documentation](docs/ARCHITECTURE.md)
-- [Changelog](CHANGELOG.md)
-- [Contribution guide](CONTRIBUTING.md)
+- [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
+
 
 ## Development
 
