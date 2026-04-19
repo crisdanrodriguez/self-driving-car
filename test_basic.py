@@ -1,215 +1,134 @@
-"""
-Basic unit tests for the self-driving car CNN model.
+"""Basic test suite for repository health and ML pipeline utilities."""
 
-Tests cover:
-- Model architecture validation
-- Data preprocessing functions
-- Image augmentation pipeline
-- Model inference capability
-"""
+from __future__ import annotations
 
-import unittest
+from pathlib import Path
+
+import cv2
 import numpy as np
-import tempfile
-import os
+import pandas as pd
+import pytest
 
-# Import modules to test
-from cnn_model import nvidia_model
 from data_preprocessing import (
-    horizontal_flip,
+    batch_generator,
     brightness_reduction,
-    translation,
+    horizontal_flip,
+    image_preprocessing,
+    prepare_driving_log,
     top_bottom_crop,
-    augment_image
+    translation,
 )
 
 
-class TestNVIDIAModel(unittest.TestCase):
-    """Test cases for the NVIDIA CNN model architecture."""
-
-    def setUp(self):
-        """Initialize test fixtures."""
-        self.model = nvidia_model()
-
-    def test_model_creation(self):
-        """Test that model is created successfully."""
-        self.assertIsNotNone(self.model)
-
-    def test_model_summary(self):
-        """Test that model has expected structure."""
-        # Model should have multiple layers
-        self.assertGreater(len(self.model.layers), 5)
-
-    def test_model_output_shape(self):
-        """Test that model produces correct output shape."""
-        # Input shape: (batch_size, 66, 200, 3)
-        test_input = np.random.randn(1, 66, 200, 3).astype(np.float32)
-        output = self.model.predict(test_input, verbose=0)
-        # Output should be (1, 1) for steering angle
-        self.assertEqual(output.shape, (1, 1))
-
-    def test_model_output_range(self):
-        """Test that model output is in reasonable steering angle range."""
-        test_input = np.random.randn(5, 66, 200, 3).astype(np.float32)
-        output = self.model.predict(test_input, verbose=0)
-        # Steering angles should typically be in [-1, 1]
-        self.assertTrue(np.all(output >= -2.0) and np.all(output <= 2.0))
-
-    def test_model_batch_processing(self):
-        """Test that model can handle multiple samples."""
-        batch_sizes = [1, 5, 10, 32]
-        for batch_size in batch_sizes:
-            test_input = np.random.randn(batch_size, 66, 200, 3).astype(np.float32)
-            output = self.model.predict(test_input, verbose=0)
-            self.assertEqual(output.shape[0], batch_size)
+def _tensorflow():
+    return pytest.importorskip("tensorflow")
 
 
-class TestDataPreprocessing(unittest.TestCase):
-    """Test cases for data preprocessing functions."""
-
-    def setUp(self):
-        """Create test images."""
-        # Create a test image (66, 200, 3) in RGB format
-        self.test_image = np.random.randint(0, 256, (66, 200, 3), dtype=np.uint8)
-        self.test_steering = 0.5
-
-    def test_horizontal_flip(self):
-        """Test horizontal flip augmentation."""
-        flipped_image, flipped_angle = horizontal_flip(
-            self.test_image.copy(),
-            self.test_steering
-        )
-        
-        # Check shapes are preserved
-        self.assertEqual(flipped_image.shape, self.test_image.shape)
-        # Check steering angle is negated
-        self.assertAlmostEqual(flipped_angle, -self.test_steering)
-        # Check image is actually flipped
-        np.testing.assert_array_almost_equal(
-            flipped_image,
-            np.flip(self.test_image, axis=1)
-        )
-
-    def test_brightness_reduction(self):
-        """Test brightness modification."""
-        modified_image = brightness_reduction(self.test_image.copy())
-        
-        # Check shape is preserved
-        self.assertEqual(modified_image.shape, self.test_image.shape)
-        # Check data type is uint8
-        self.assertEqual(modified_image.dtype, np.uint8)
-        # Check image values are valid
-        self.assertTrue(np.all(modified_image >= 0) and np.all(modified_image <= 255))
-
-    def test_translation(self):
-        """Test image translation."""
-        translated_image, translated_angle = translation(
-            self.test_image.copy(),
-            self.test_steering
-        )
-        
-        # Check shape is preserved
-        self.assertEqual(translated_image.shape, self.test_image.shape)
-        # Check steering angle is adjusted
-        self.assertNotEqual(translated_angle, self.test_steering)
-
-    def test_top_bottom_crop(self):
-        """Test image cropping."""
-        cropped_image = top_bottom_crop(self.test_image.copy())
-        
-        # Original image: (66, 200, 3)
-        # Expected: (66-40-25, 200, 3) = (1, 200, 3)
-        expected_height = 66 - 40 - 25
-        self.assertEqual(cropped_image.shape, (expected_height, 200, 3))
+@pytest.fixture
+def sample_image() -> np.ndarray:
+    return np.random.randint(0, 256, size=(160, 320, 3), dtype=np.uint8)
 
 
-class TestModelInference(unittest.TestCase):
-    """Test cases for model inference."""
+def test_horizontal_flip_negates_steering(sample_image: np.ndarray) -> None:
+    flipped_image, flipped_angle = horizontal_flip(sample_image.copy(), 0.35)
 
-    def setUp(self):
-        """Initialize model for inference."""
-        self.model = nvidia_model()
-
-    def test_inference_with_zero_input(self):
-        """Test model inference with zero input."""
-        test_input = np.zeros((1, 66, 200, 3), dtype=np.float32)
-        output = self.model.predict(test_input, verbose=0)
-        self.assertIsNotNone(output)
-
-    def test_inference_with_normalized_input(self):
-        """Test model inference with normalized input."""
-        test_input = np.random.randn(1, 66, 200, 3).astype(np.float32)
-        test_input = test_input / 255.0  # Normalize to [0, 1]
-        output = self.model.predict(test_input, verbose=0)
-        self.assertIsNotNone(output)
-
-    def test_deterministic_output(self):
-        """Test that same input produces consistent output."""
-        test_input = np.ones((1, 66, 200, 3), dtype=np.float32)
-        outputs = [self.model.predict(test_input, verbose=0) for _ in range(3)]
-        
-        # All outputs should be identical
-        for output in outputs[1:]:
-            np.testing.assert_array_almost_equal(outputs[0], output)
+    assert flipped_image.shape == sample_image.shape
+    assert flipped_angle == pytest.approx(-0.35)
+    np.testing.assert_array_equal(flipped_image, np.flip(sample_image, axis=1))
 
 
-class TestImportCompatibility(unittest.TestCase):
-    """Test that all imports work correctly."""
+def test_brightness_reduction_preserves_shape_and_dtype(
+    sample_image: np.ndarray,
+) -> None:
+    reduced = brightness_reduction(sample_image.copy())
 
-    def test_imports(self):
-        """Test that all required packages can be imported."""
-        try:
-            import tensorflow
-            import numpy
-            import pandas
-            import cv2
-            import sklearn
-            self.assertTrue(True)
-        except ImportError as e:
-            self.fail(f"Failed to import required package: {e}")
-
-    def test_tensorflow_version(self):
-        """Test TensorFlow version compatibility."""
-        import tensorflow as tf
-        version = tuple(map(int, tf.__version__.split('.')[:2]))
-        # TensorFlow 2.0+
-        self.assertGreaterEqual(version[0], 2)
-
-    def test_numpy_array_operations(self):
-        """Test basic NumPy operations."""
-        arr = np.array([1, 2, 3, 4, 5])
-        result = np.mean(arr)
-        self.assertEqual(result, 3.0)
+    assert reduced.shape == sample_image.shape
+    assert reduced.dtype == np.uint8
+    assert reduced.min() >= 0
+    assert reduced.max() <= 255
 
 
-class TestEdgeCases(unittest.TestCase):
-    """Test edge cases and error handling."""
+def test_translation_preserves_dimensions(sample_image: np.ndarray) -> None:
+    translated_image, translated_angle = translation(
+        sample_image.copy(),
+        0.1,
+        x_translation_range=(-5, 5),
+        y_translation_range=(-2, 2),
+    )
 
-    def setUp(self):
-        """Initialize test fixtures."""
-        self.model = nvidia_model()
-
-    def test_empty_batch(self):
-        """Test handling of empty batch."""
-        test_input = np.empty((0, 66, 200, 3), dtype=np.float32)
-        try:
-            output = self.model.predict(test_input, verbose=0)
-            self.assertEqual(output.shape[0], 0)
-        except Exception:
-            # Empty batch might raise an exception, which is acceptable
-            pass
-
-    def test_large_steering_angle(self):
-        """Test handling of extreme steering angles."""
-        extreme_angles = [-2.0, -1.5, 1.5, 2.0]
-        for angle in extreme_angles:
-            # Should not raise exception
-            flipped, result = horizontal_flip(
-                np.random.randint(0, 256, (66, 200, 3), dtype=np.uint8),
-                angle
-            )
-            self.assertIsNotNone(flipped)
+    assert translated_image.shape == sample_image.shape
+    assert translated_angle != 0.1
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_top_bottom_crop_uses_expected_region(sample_image: np.ndarray) -> None:
+    cropped = top_bottom_crop(sample_image)
+
+    assert cropped.shape == (95, 320, 3)
+
+
+def test_image_preprocessing_returns_model_ready_frame(
+    sample_image: np.ndarray,
+) -> None:
+    processed = image_preprocessing(sample_image)
+
+    assert processed.shape == (66, 200, 3)
+    assert processed.dtype == np.float32
+    assert processed.min() >= 0.0
+    assert processed.max() <= 1.0
+
+
+def test_prepare_driving_log_normalizes_camera_paths(tmp_path: Path) -> None:
+    image_dir = tmp_path / "IMG"
+    image_dir.mkdir()
+
+    image_path = image_dir / "frame.jpg"
+    cv2.imwrite(str(image_path), np.zeros((160, 320, 3), dtype=np.uint8))
+
+    csv_path = tmp_path / "driving_log.csv"
+    csv_path.write_text(
+        "center_camera,left_camera,right_camera,steering_angle,throttle,brake,speed\n"
+        "IMG/frame.jpg,IMG/frame.jpg,IMG/frame.jpg,0.0,0.0,0.0,0.0\n",
+        encoding="utf-8",
+    )
+
+    dataframe = prepare_driving_log(str(csv_path))
+
+    assert len(dataframe) == 1
+    assert dataframe.loc[0, "center_camera"] == str(image_path.resolve())
+
+
+def test_batch_generator_yields_expected_shapes(tmp_path: Path) -> None:
+    image_dir = tmp_path / "IMG"
+    image_dir.mkdir()
+
+    image_path = image_dir / "frame.jpg"
+    cv2.imwrite(str(image_path), np.zeros((160, 320, 3), dtype=np.uint8))
+
+    dataframe = pd.DataFrame(
+        {
+            "center_camera": [str(image_path.resolve())],
+            "left_camera": [str(image_path.resolve())],
+            "right_camera": [str(image_path.resolve())],
+            "steering_angle": [0.0],
+            "throttle": [0.0],
+            "brake": [0.0],
+            "speed": [0.0],
+        }
+    )
+
+    images, angles = next(batch_generator(dataframe, batch_size=2, training=False))
+
+    assert images.shape == (2, 66, 200, 3)
+    assert angles.shape == (2,)
+    assert images.dtype == np.float32
+
+
+def test_tensorflow_model_builds_and_predicts() -> None:
+    _tensorflow()
+    from cnn_model import nvidia_model
+
+    model = nvidia_model()
+    output = model.predict(np.zeros((1, 66, 200, 3), dtype=np.float32), verbose=0)
+
+    assert output.shape == (1, 1)
+    assert model.count_params() == 252219

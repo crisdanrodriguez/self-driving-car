@@ -1,42 +1,40 @@
 ---
-name: Bug Report
-about: Report a bug to help us improve
-title: "[BUG] "
+name: Bug report
+about: Report a reproducible defect
+title: "[Bug] "
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
-## 🐛 Bug Description
-A clear and concise description of what the bug is.
+## Summary
 
-## 📋 To Reproduce
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Run '...'
-3. See error
+Describe the problem clearly and concisely.
 
-## ✅ Expected Behavior
-A clear and concise description of what you expected to happen.
+## Steps to Reproduce
 
-## ❌ Actual Behavior
-What actually happens instead.
+1. Go to `...`
+2. Run `...`
+3. Observe `...`
 
-## 📸 Screenshots / Error Output
-If applicable, add screenshots or copy/paste the error message.
+## Expected Behavior
 
-```
-Paste error output here
-```
+Describe what you expected to happen.
 
-## 🔧 Environment
-- OS: [e.g. macOS, Linux, Windows]
-- Python Version: [e.g. 3.10]
-- Package versions: [e.g. TensorFlow 2.15]
-- GPU/CPU: [detected or used]
+## Actual Behavior
 
-## 📝 Additional Context
-Add any other context about the problem here.
+Describe what happened instead.
 
-## ✨ Potential Solution
-If you have any ideas on how to fix this, please describe them here.
+## Environment
+
+- OS:
+- Python version:
+- TensorFlow version:
+- CPU or GPU:
+
+## Logs or Screenshots
+
+Paste relevant output, traceback, or screenshots here.
+
+## Additional Context
+
+Add any extra details that may help reproduce the issue.
