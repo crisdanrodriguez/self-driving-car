@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
 
-End-to-end steering-angle prediction for the Udacity self-driving car simulator using a CNN inspired by NVIDIA's DAVE-2 architecture. The repository includes data preprocessing, model training, realtime inference, automated tests, and GitHub collaboration templates.
+End-to-end steering-angle prediction for the Udacity self-driving car simulator using a CNN inspired by NVIDIA's DAVE-2 architecture. The repository focuses on the essential application code, reproducible setup files, automated tests, and core documentation.
 
 ## Table of Contents
 
@@ -13,7 +13,6 @@ End-to-end steering-angle prediction for the Udacity self-driving car simulator 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Results](#results)
 - [Documentation](#documentation)
 - [Development](#development)
 - [License](#license)
@@ -108,12 +107,6 @@ Start the Udacity simulator in autonomous mode and then launch the inference bri
 python autonomous_driving.py --model-path model.h5 --port 4567
 ```
 
-### 4. Explore the Notebook
-
-```bash
-jupyter notebook data_visualization.ipynb
-```
-
 ## Project Structure
 
 ```text
@@ -127,27 +120,12 @@ self-driving-car/
 ├── autonomous_driving.py
 ├── cnn_model.py
 ├── data_preprocessing.py
-├── data_visualization.ipynb
 ├── main.py
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── test_basic.py
-├── CONTRIBUTING.md
 └── README.md
 ```
-
-## Results
-
-The repository includes the full training and inference workflow, but model quality depends on the dataset you collect. Because steering-angle prediction is a regression task, meaningful evaluation should focus on:
-
-- Validation loss and MAE during training
-- Qualitative behavior in the simulator
-- Robustness on unseen tracks and lighting conditions
-
-A reference demo asset is included in the repository:
-
-- [Project presentation PDF](Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
-- [Architecture notes](docs/ARCHITECTURE.md)
 
 ## Documentation
 
