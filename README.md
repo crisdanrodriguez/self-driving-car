@@ -1,9 +1,10 @@
 # Self-Driving Car Steering Angle Prediction
 
-[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/tensorflow-2.15%2B-orange?style=flat-square)](https://www.tensorflow.org/)
-[![License](https://img.shields.io/badge/license-MIT-111111.svg)](./LICENSE)
-[![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-0A66C2?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15%2B-0A66C2?style=flat-square&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![Tests](https://img.shields.io/github/actions/workflow/status/crisdanrodriguez/self-driving_car/tests.yml?branch=main&style=flat-square&label=Tests&logo=githubactions&logoColor=white)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
+[![License](https://img.shields.io/badge/License-MIT-0A66C2?style=flat-square&logo=opensourceinitiative&logoColor=white)](./LICENSE)
+
 
 Compact end-to-end steering-angle prediction project for the Udacity self-driving car simulator, built with TensorFlow/Keras and organized as a clean, installable Python package.
 
