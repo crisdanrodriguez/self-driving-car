@@ -13,6 +13,7 @@ End-to-end steering-angle prediction for the Udacity self-driving car simulator 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
+- [Results](#results)
 - [Documentation](#documentation)
 - [Development](#development)
 - [License](#license)
@@ -73,7 +74,7 @@ pip install -r requirements-dev.txt
 
 ### 1. Prepare the Dataset
 
-Record driving sessions with the Udacity simulator and place the exported files under `data/`:
+Record driving sessions with the [Udacity Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim) and place the exported files under `data/`:
 
 ```text
 data/
@@ -127,9 +128,23 @@ self-driving-car/
 └── README.md
 ```
 
+## Results
+
+## Results
+
+Project results and supporting material are available here:
+
+- [Performance demo on YouTube](https://www.youtube.com/watch?v=dgYWUmMOcOk)
+- [Project presentation (PDF)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
+- [Project presentation source (PPTX)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pptx)
+- [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
+
+
 ## Documentation
 
 - [Architecture documentation](docs/ARCHITECTURE.md)
+- [Project presentation (PDF)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
+- [Project presentation source (PPTX)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pptx)
 - [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
 
 
