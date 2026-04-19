@@ -17,6 +17,7 @@ End-to-end steering-angle prediction for the Udacity self-driving car simulator 
 - [Documentation](#documentation)
 - [Development](#development)
 - [License](#license)
+- [AI Assistance and Last Updated](#ai-assistance-and-last-updated)
 
 ## Overview
 
@@ -170,3 +171,11 @@ GitHub Actions runs the test workflow automatically on pushes and pull requests 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## AI Assistance and Last Updated
+
+This repository's GitHub professionalization was completed with AI-assisted support
+using OpenAI Codex, with the final changes reviewed and applied in the repository
+workspace.
+
+Last updated: April 19, 2026
