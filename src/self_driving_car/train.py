@@ -5,11 +5,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from sklearn.model_selection import train_test_split
-
-from cnn_model import nvidia_model
-from data_preprocessing import batch_generator, prepare_driving_log
-
 DEFAULT_BATCH_SIZE = 64
 DEFAULT_EPOCHS = 5
 DEFAULT_STEPS_PER_EPOCH = 200
@@ -29,6 +24,11 @@ def train_model(
     random_state: int = DEFAULT_RANDOM_STATE,
 ) -> tuple[object, object]:
     """Train the CNN model using a Udacity-style driving log."""
+
+    from sklearn.model_selection import train_test_split
+
+    from self_driving_car.model import nvidia_model
+    from self_driving_car.preprocessing import batch_generator, prepare_driving_log
 
     driving_log = prepare_driving_log(data_path)
 

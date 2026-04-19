@@ -4,6 +4,13 @@
 
 The model follows the NVIDIA DAVE-2 style approach for end-to-end steering-angle prediction from RGB road images. Input frames are cropped, converted to YUV, resized to `66 x 200`, normalized to `[0, 1]`, and then passed through a compact convolutional regression network.
 
+## Implementation Map
+
+- `src/self_driving_car/preprocessing.py`: dataset normalization, path resolution, augmentation, and batch generation
+- `src/self_driving_car/model.py`: NVIDIA-style CNN definition and compilation
+- `src/self_driving_car/train.py`: training CLI for fitting and saving the model
+- `src/self_driving_car/inference.py`: realtime Socket.IO bridge for the Udacity simulator
+
 ## Model Pipeline
 
 ```text
@@ -68,6 +75,7 @@ These values are safe starting points, not fixed benchmark settings.
 - The repository expects a Udacity-style `driving_log.csv`.
 - Camera paths are normalized relative to the CSV location when possible.
 - Realtime inference is served over Socket.IO for compatibility with the simulator bridge.
+- The project is organized as an installable `src/` package to keep imports stable across local development, tests, and CI.
 
 ## References
 

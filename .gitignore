@@ -43,6 +43,7 @@ coverage.xml
 *~
 
 # Project data and generated models
+artifacts/
 data/
 dataset/
 recordings/
@@ -52,3 +53,5 @@ simulator/
 *.h5
 *.keras
 driving_log.csv
+*.log
+.python-version

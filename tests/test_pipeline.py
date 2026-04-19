@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from data_preprocessing import (
+from self_driving_car.preprocessing import (
     batch_generator,
     brightness_reduction,
     horizontal_flip,
@@ -125,7 +125,7 @@ def test_batch_generator_yields_expected_shapes(tmp_path: Path) -> None:
 
 def test_tensorflow_model_builds_and_predicts() -> None:
     _tensorflow()
-    from cnn_model import nvidia_model
+    from self_driving_car.model import nvidia_model
 
     model = nvidia_model()
     output = model.predict(np.zeros((1, 66, 200, 3), dtype=np.float32), verbose=0)

@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
 
-End-to-end steering-angle prediction for the Udacity self-driving car simulator using a CNN inspired by NVIDIA's DAVE-2 architecture. The repository focuses on the essential application code, reproducible setup files, automated tests, and core documentation.
+Compact end-to-end steering-angle prediction project for the Udacity self-driving car simulator, built with TensorFlow/Keras and organized as a clean, installable Python package.
 
 ## Table of Contents
 
@@ -21,36 +21,32 @@ End-to-end steering-angle prediction for the Udacity self-driving car simulator 
 
 ## Overview
 
-This project trains a convolutional neural network to predict steering commands directly from front-facing camera frames. It is designed around the Udacity simulator workflow:
+This repository trains a convolutional neural network to predict steering angles directly from front-facing simulator frames. It focuses on a minimal but professional layout: core training and inference code, lightweight tests, reproducible setup files, and curated supporting documentation.
 
-- Preprocess and augment simulator images
-- Train a regression model on `driving_log.csv`
-- Load the trained model for realtime steering inference
-- Validate repository health through automated checks
+Project profile:
 
-### Project Type
-
+- Type: Machine learning / computer vision
 - Language: Python
-- Domain: Machine Learning / Computer Vision
-- Runtime: TensorFlow + Keras
-- Interface: CLI scripts and Socket.IO server for the Udacity simulator
+- Framework: TensorFlow + Keras
+- Interface: CLI training flow and Socket.IO inference server for the Udacity simulator
 
-### Supported Environment
+What the repository currently includes:
 
-- Python `3.10` or `3.11`
-- Linux: supported for training and CI
-- macOS Apple Silicon: supported through `tensorflow-macos`
-- Windows: preprocessing utilities and project structure are supported; full training/inference compatibility depends on TensorFlow availability
+- Udacity-style `driving_log.csv` preprocessing and camera-path normalization
+- On-the-fly image augmentation and batch generation
+- NVIDIA DAVE-2 inspired regression model
+- Realtime simulator bridge for autonomous steering inference
+- Basic automated validation through tests and CI
 
 ## Installation
 
-### Prerequisites
+Prerequisites:
 
 - Python `3.10` or `3.11`
 - `pip`
-- Optional GPU acceleration configured for TensorFlow
+- Optional TensorFlow-compatible acceleration if you plan to train locally
 
-### Setup
+Setup:
 
 ```bash
 git clone https://github.com/crisdanrodriguez/self-driving_car.git
@@ -58,7 +54,7 @@ cd self-driving_car
 python -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements-dev.txt
+pip install -e .[dev]
 ```
 
 On Windows PowerShell:
@@ -67,14 +63,14 @@ On Windows PowerShell:
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install --upgrade pip
-pip install -r requirements-dev.txt
+pip install -e .[dev]
 ```
 
 ## Usage
 
-### 1. Prepare the Dataset
+### 1. Prepare the dataset
 
-Record driving sessions with the [Udacity Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim) and place the exported files under `data/`:
+Export a driving session from the [Udacity Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim) and place the files under `data/`:
 
 ```text
 data/
@@ -85,69 +81,85 @@ data/
     └── right_*.jpg
 ```
 
-The training pipeline normalizes Udacity-style camera paths automatically, including Windows-style paths stored inside `driving_log.csv`.
+The preprocessing pipeline resolves Udacity-style relative paths and normalizes Windows-style path separators when needed.
 
-### 2. Train the Model
+### 2. Train the model
 
 ```bash
-python main.py --data-path data/driving_log.csv --model-output model.h5
+python -m self_driving_car.train \
+  --data-path data/driving_log.csv \
+  --model-output artifacts/model.h5
 ```
 
-Useful options:
+Useful commands:
 
 ```bash
-python main.py --help
-python main.py --epochs 10 --batch-size 64 --steps-per-epoch 300
+python -m self_driving_car.train --help
+python -m self_driving_car.train --epochs 10 --batch-size 64 --steps-per-epoch 300
 ```
 
-### 3. Run Autonomous Driving
+### 3. Run autonomous inference
 
-Start the Udacity simulator in autonomous mode and then launch the inference bridge:
+Start the Udacity simulator in autonomous mode, then run:
 
 ```bash
-python autonomous_driving.py --model-path model.h5 --port 4567
+python -m self_driving_car.inference --model-path artifacts/model.h5 --port 4567
+```
+
+Console scripts are also available after installation:
+
+```bash
+train-steering-model --help
+run-simulator-bridge --help
 ```
 
 ## Project Structure
 
 ```text
-self-driving-car/
+self-driving_car/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
-│   ├── workflows/tests.yml
-│   └── pull_request_template.md
+│   ├── pull_request_template.md
+│   └── workflows/tests.yml
 ├── docs/
-│   ├── ARCHITECTURE.md
-│   ├── Self-Driving Car, Predicting Steering Wheel Angle.pdf
-│   └── Self-Driving Car, Predicting Steering Wheel Angle.pptx
-├── autonomous_driving.py
-├── cnn_model.py
-├── data_preprocessing.py
-├── data_visualization.ipynb
-├── main.py
+│   ├── documentation/
+│   │   ├── architecture.md
+│   │   └── steering-angle-presentation.pdf
+│   └── results/
+│       └── steering-angle-presentation.pptx
+├── notebooks/
+│   └── data-visualization.ipynb
+├── src/
+│   └── self_driving_car/
+│       ├── __init__.py
+│       ├── inference.py
+│       ├── model.py
+│       ├── preprocessing.py
+│       └── train.py
+├── tests/
+│   └── test_pipeline.py
+├── pyproject.toml
 ├── requirements.txt
 ├── requirements-dev.txt
-├── test_basic.py
+├── LICENSE
 └── README.md
 ```
 
 ## Results
 
-Project results and supporting material are available here:
-
 - [Performance demo on YouTube](https://www.youtube.com/watch?v=dgYWUmMOcOk)
-- [Project presentation (PDF)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
-- [Project presentation source (PPTX)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pptx)
+- [Project presentation source (PPTX)](docs/results/steering-angle-presentation.pptx)
 
 ## Documentation
 
-- [Architecture documentation](docs/ARCHITECTURE.md)
+- [Architecture notes](docs/documentation/architecture.md)
+- [Project presentation (PDF)](docs/documentation/steering-angle-presentation.pdf)
+- [Data visualization notebook](notebooks/data-visualization.ipynb)
 - [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
-
 
 ## Development
 
-Run the local quality checks with:
+Run the local checks with:
 
 ```bash
 pytest -q
@@ -156,7 +168,7 @@ isort --check-only .
 flake8 .
 ```
 
-GitHub Actions runs the test workflow automatically on pushes and pull requests to `main`.
+The GitHub Actions workflow runs the same validation on pushes and pull requests to `main`.
 
 ## License
 
@@ -164,8 +176,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## AI Assistance and Last Updated
 
-This repository's GitHub professionalization was completed with AI-assisted support
-using OpenAI Codex, with the final changes reviewed and applied in the repository
-workspace.
+This repository was refined with AI-assisted support using OpenAI Codex, with changes reviewed and applied in the local workspace.
 
 Last updated: April 19, 2026
