@@ -116,7 +116,7 @@ run-simulator-bridge --help
 ## Project Structure
 
 ```text
-self-driving_car/
+self-driving-car/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   ├── pull_request_template.md
