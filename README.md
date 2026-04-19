@@ -117,10 +117,13 @@ self-driving-car/
 │   ├── workflows/tests.yml
 │   └── pull_request_template.md
 ├── docs/
-│   └── ARCHITECTURE.md
+│   ├── ARCHITECTURE.md
+│   ├── Self-Driving Car, Predicting Steering Wheel Angle.pdf
+│   └── Self-Driving Car, Predicting Steering Wheel Angle.pptx
 ├── autonomous_driving.py
 ├── cnn_model.py
 ├── data_preprocessing.py
+├── data_visualization.ipynb
 ├── main.py
 ├── requirements.txt
 ├── requirements-dev.txt
@@ -130,21 +133,15 @@ self-driving-car/
 
 ## Results
 
-## Results
-
 Project results and supporting material are available here:
 
 - [Performance demo on YouTube](https://www.youtube.com/watch?v=dgYWUmMOcOk)
 - [Project presentation (PDF)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
 - [Project presentation source (PPTX)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pptx)
-- [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
-
 
 ## Documentation
 
 - [Architecture documentation](docs/ARCHITECTURE.md)
-- [Project presentation (PDF)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pdf)
-- [Project presentation source (PPTX)](docs/Self-Driving%20Car,%20Predicting%20Steering%20Wheel%20Angle.pptx)
 - [Toward AI article: Revolutionizing Autonomy: CNNs in Self-Driving Cars](https://towardsai.net/p/l/revolutionizing-autonomy-cnns-in-self-driving-cars)
 
 
