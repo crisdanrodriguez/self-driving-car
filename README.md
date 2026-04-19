@@ -1,8 +1,8 @@
 # Self-Driving Car Steering Angle Prediction
 
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue?style=flat-square)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/tensorflow-2.15%2B-orange?style=flat-square)](https://www.tensorflow.org/)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-111111.svg)](./LICENSE)
 [![Tests](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml/badge.svg?style=flat-square)](https://github.com/crisdanrodriguez/self-driving_car/actions/workflows/tests.yml)
 
 Compact end-to-end steering-angle prediction project for the Udacity self-driving car simulator, built with TensorFlow/Keras and organized as a clean, installable Python package.
